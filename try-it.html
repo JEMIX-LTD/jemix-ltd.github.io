@@ -61,7 +61,7 @@
         </div>
     </div>
 
-
+    <!-- done  -->
     <div class="navbar-area navbar-style-two">
         <div class="sparsity-responsive-nav">
             <div class="container">
@@ -108,7 +108,7 @@
     </div>
 
 
-
+    <!-- done  -->
     <div class="page-title-area item-bg2">
         <div class="container">
             <div class="page-title-content">
@@ -125,7 +125,7 @@
             <div class="line"></div>
         </div>
     </div>
-
+    <!-- done  -->
     <section class="contact-area ptb-110">
         <div class="container">
             <div class="section-title">
@@ -139,8 +139,8 @@
                    
                     <form class="newsletter-form">
                         <input type="text" class="input-newsletter" id="input-text" placeholder="Try Any Text" required="required">
-                        <button type="submit" class="btn btn-primary" id="submit-btn">Run It</button>
-                                    <div class="clearfix"></div>
+                        <button type="submit" class="btn btn-primary buttonload" id="submit-btn">Try It</button>
+                        <div class="clearfix"></div>
                     </form>
                     
                 </div>
@@ -149,9 +149,7 @@
             <div class="col-lg-12 col-md-12">
                 <h2> Result :</h2>
                 <div id="result-sudoai">
-                    <pre>
-                        
-                    </pre>
+
                 </div>
             </div>
         </div>
@@ -247,10 +245,30 @@
     <script src="assets/js/main.js"></script>
 
     <script>
+        var positive = '<i class="fas fa-smile"></i>';
+        var negative = '<i class="fas fa-angry"></i>';
+        var neutral = '<i class="fas fa-meh"></i>';
+
+
+        function resultHelper(data){
+            res = '<p class="r">';
+            for( const x in data['nsfw']){
+                if(data['nsfw'][x] == 'NOTSAFE'){
+                    res += '<span class="text-danger">'+ x +'</span> ';
+                }else{
+                    res += x + ' ';
+                }
+            }
+            res +='</p>';
+            return res;
+        }
+
         $('#submit-btn').click(function(e){
             e.preventDefault();
             var data = $('#input-text').val();
+            
             if(data){
+                $('#submit-btn').html('<i class="fa fa-spinner fa-spin"></i>Run It');
                 $.ajax(
                     {url : 'https://sudoai.tn/' + data,
                     type : 'POST',
@@ -259,11 +277,40 @@
 
                 ).done(function(d){
                     $('#input-text').val("");
-                    $('#result-sudoai').text(JSON.stringify(d));
+                    $('#submit-btn').text('Run It');
+
+                    console.log(d);
+
+                    if(d['sa'] == 'Positiv'){
+                        $('#result-sudoai').html(positive + resultHelper(d));
+                    }
+                    if(d['sa'] == 'Negative'){
+                        $('#result-sudoai').html(negative + resultHelper(d));
+                    }
+                    if(d['sa'] == 'Neutral'){
+                        $('#result-sudoai').html(neutral + resultHelper(d));
+                    }
+                    
                 });
             }
             
         });
     </script>
+    <style>
+        .fa {
+            margin-left: -12px;
+            margin-right: 8px;
+        }
+        #result-sudoai i{
+            font-size: 5rem;
+            color : #ff4800;
+        }
+
+        .r {
+            font-size: large;
+            margin-left: 100px;
+            margin-top: -50px;
+        }
+    </style>
 </body>
 </html>
