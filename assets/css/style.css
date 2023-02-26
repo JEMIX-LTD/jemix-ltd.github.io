@@ -7788,3 +7788,18 @@ blockquote::before,
 .optional-logo {
     height: 35px;
 }
+
+.fa {
+    margin-left: -12px;
+    margin-right: 8px;
+}
+#result-sudoai i{
+    font-size: 5rem;
+    color : #ff4800;
+}
+
+.r {
+    font-size: large;
+    margin-left: 100px;
+    margin-top: -50px;
+}
